@@ -5,12 +5,9 @@ const upload = require("../middleware/fileUploader")
 const authUser = require('../middleware/authUser')
 
 
-router.post("/add", authUser.verifyAdmin, upload, async (req, res) => {
+router.post("/add", authUser.verifyAdmin, async (req, res) => {
   try {
-    const productRes = new Products({
-      img: req.file.filename,
-      ...req.body,
-    })
+    const productRes = new Products(req.body)
 
     const result = await productRes.save()
     res.status(201).send("posted successfully")
@@ -22,7 +19,7 @@ router.post("/add", authUser.verifyAdmin, upload, async (req, res) => {
 })
 
 
-router.get("/getAll", authUser.verifyUser, async (req, res) => {
+router.get("/getAll", async (req, res) => {
   try {
     // console.log(req.body)
     const getProducts = await Products.find()
@@ -42,11 +39,10 @@ router.get("/get/:id", authUser.verifyUser, async (req, res) => {
   }
 })
 
-router.patch("/update/:id", authUser.verifyAdmin, upload, async (req, res) => {
+router.patch("/update/:id", authUser.verifyAdmin, async (req, res) => {
   try {
     const _id = req.params.id
     const updateProducts = await Products.findByIdAndUpdate(_id, {
-      img: req.file.filename,
       ...req.body
     }, { new: true })
     res.send(updateProducts)

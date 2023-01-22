@@ -10,16 +10,9 @@ const validator = require("validator")
          type: Number,
          required: true
      },
-     img: {
-        type: String
-     },
-     category :{ 
+     genre :{ 
         type: String,
         required: true
-     },
-     type: {
-         type: String,
-         required : true
      }
 
 })
