@@ -51,7 +51,7 @@ router.patch("/update/:id", authUser.verifyAdmin, async (req, res) => {
   }
 })
 
-router.patch("/delete/:id", authUser.verifyAdmin, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const _id = req.params.id
     const deleteProducts = await Products.findByIdAndDelete(_id, { new: true })
