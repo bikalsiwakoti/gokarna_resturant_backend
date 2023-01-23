@@ -4,6 +4,7 @@ const path = require("path")
 const productRoute = require('./src/routes/product')
 const userRoute = require('./src/routes/user')
 const tablesRoute = require('./src/routes/tables')
+const ordersRoute = require('./src/routes/orders')
 const authUser = require('./src/middleware/authUser')
 
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extendend: true}))
 app.use('/api/product', productRoute);
 app.use('/api/user',userRoute);
 app.use('/api/tables',tablesRoute);
+app.use('/api/orders',ordersRoute);
 
 
 app.listen(port, () => {

@@ -10,7 +10,13 @@ const validator = require("validator")
   status: {
     type: String,
     required: true
-  }
+  },
+  tableOrders:[{
+    productsId: String,
+    quantity: Number,
+    price: Number,
+    orderId: String
+  }]
 
 })
 
