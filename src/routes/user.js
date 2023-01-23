@@ -58,10 +58,15 @@ router.post("/login", async (req, res) => {
         httpOnly: true,
         // secure: true
       });
-      res.status(201).send(`You are Login as ${usernameCheck.username}`)
+      const data = {
+        username: usernameCheck.username,
+        isAdmin: usernameCheck.isAdmin,
+        _id: usernameCheck._id
+      }
+      res.status(201).send(data)
 
     } else {
-      res.send("Invalid details")
+      res.status(401).send("Invalid details")
     }
 
   } catch (err) {
@@ -70,7 +75,5 @@ router.post("/login", async (req, res) => {
 
 
 })
-
-
 
 module.exports = router;
