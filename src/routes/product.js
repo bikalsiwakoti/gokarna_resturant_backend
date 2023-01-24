@@ -10,7 +10,7 @@ router.post("/add", authUser.verifyAdmin, async (req, res) => {
     const productRes = new Products(req.body)
 
     const result = await productRes.save()
-    res.status(201).send("posted successfully")
+    res.status(201).send(productRes)
   }
   // }
   catch (err) {
@@ -23,6 +23,18 @@ router.get("/getAll", async (req, res) => {
   try {
     // console.log(req.body)
     const getProducts = await Products.find()
+    res.status(201).send(getProducts)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+router.get("/getBySearch", async (req, res) => {
+  try {
+    // console.log(req.body)
+    const product = req.query.product
+    console.log(product)
+    const getProducts = await Products.find({name: {$regex: product, $options:"$i"}})
     res.status(201).send(getProducts)
   } catch (err) {
     res.status(400).send(err)
