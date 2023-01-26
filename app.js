@@ -8,6 +8,7 @@ const ordersRoute = require('./src/routes/orders')
 const authUser = require('./src/middleware/authUser')
 
 
+
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -20,6 +21,11 @@ app.use('/api/user',userRoute);
 app.use('/api/tables',tablesRoute);
 app.use('/api/orders',ordersRoute);
 
+// for heroku
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static(path.join("gokarna-pos/build"))); 
+  app.get("*",(req,res)=> res.sendFile(path.resolve(__dirname,"gokarna-pos","build", "index.html"))) 
+}
 
 app.listen(port, () => {
   console.log(`Connecting in a port ${port}`)
