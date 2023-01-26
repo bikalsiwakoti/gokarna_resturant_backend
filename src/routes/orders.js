@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Orders = require("../models/orders")
+const authUser = require('../middleware/authUser')
+
 
 
 router.post("/add", async (req, res) => {
@@ -16,7 +18,7 @@ router.post("/add", async (req, res) => {
 })
 
 
-router.get("/get", async (req, res) => {
+router.get("/get",authUser.verifyUser,  async (req, res) => {
   try {
     // console.log(req.body)
     const getOrders = await Orders.find()

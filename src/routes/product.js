@@ -5,7 +5,7 @@ const upload = require("../middleware/fileUploader")
 const authUser = require('../middleware/authUser')
 
 
-router.post("/add", authUser.verifyAdmin, async (req, res) => {
+router.post("/add", authUser.verifyUser, async (req, res) => {
   try {
     const productRes = new Products(req.body)
 
@@ -19,7 +19,7 @@ router.post("/add", authUser.verifyAdmin, async (req, res) => {
 })
 
 
-router.get("/getAll", async (req, res) => {
+router.get("/getAll",authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
     const getProducts = await Products.find()
@@ -29,7 +29,7 @@ router.get("/getAll", async (req, res) => {
   }
 })
 
-router.get("/getBySearch", async (req, res) => {
+router.get("/getBySearch", authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
     const product = req.query.product
@@ -51,7 +51,7 @@ router.get("/get/:id", authUser.verifyUser, async (req, res) => {
   }
 })
 
-router.patch("/update/:id", authUser.verifyAdmin, async (req, res) => {
+router.patch("/update/:id", authUser.verifyUser, async (req, res) => {
   try {
     const _id = req.params.id
     const updateProducts = await Products.findByIdAndUpdate(_id, {
@@ -63,7 +63,7 @@ router.patch("/update/:id", authUser.verifyAdmin, async (req, res) => {
   }
 })
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", authUser.verifyUser, async (req, res) => {
   try {
     const _id = req.params.id
     const deleteProducts = await Products.findByIdAndDelete(_id, { new: true })
