@@ -26,7 +26,7 @@ router.post("/add", async (req, res) => {
 router.get("/get", authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
-    const getOrders = await Orders.find()
+    const getOrders = await Orders.find().sort({ _id: -1 })
     res.status(201).send(getOrders)
 
   } catch (err) {
