@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Orders = require("../models/orders")
-const authUser = require('../middleware/authUser')
+const authUser = require('../middleware/authUser');
+const { find } = require('../models/tables');
 
 
 
 router.post("/add", async (req, res) => {
   try {
     // console.log(req.body)
-    const ordersRes = new Orders(req.body)
+    const ordersData = await Orders.find()
+    const ordersRes = new Orders({
+      ...req.body,
+      orderId: ordersData.length + 1,
+    })
     await ordersRes.save()
     res.status(201).send("posted successfully")
 
@@ -18,7 +23,7 @@ router.post("/add", async (req, res) => {
 })
 
 
-router.get("/get",authUser.verifyUser,  async (req, res) => {
+router.get("/get", authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
     const getOrders = await Orders.find()

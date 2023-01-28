@@ -19,6 +19,7 @@ router.post("/add", async (req, res) => {
 router.post("/tableOrders/add/:id", async (req, res) => {
   try {
     const _id = req.params.id
+    const productsId = req.body.productsId
     console.log(req.body)
     await Tables.findByIdAndUpdate({ _id }, { $push: { tableOrders: req.body } }, { new: true })
     res.status(201).send(req.body)
