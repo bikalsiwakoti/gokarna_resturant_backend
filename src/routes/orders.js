@@ -34,5 +34,24 @@ router.get("/get", authUser.verifyUser, async (req, res) => {
   }
 })
 
+router.get("/getByDates", authUser.verifyUser, async (req, res) => {
+  try {
+    // console.log(req.body.startDate)
+    const startDate = req.query.startDate
+    const endDate = req.query.endDate
+    // console.log(startDate)
+    if (startDate || endDate) {
+      const getOrders = await Orders.find({ updatedAt: { $gte: startDate, $lte: endDate } }).sort({ _id: -1 })
+      res.status(201).send(getOrders)
+    } else {
+      const getOrders = await Orders.find().sort({ _id: -1 })
+      res.status(201).send(getOrders)
+
+    }
+
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
 module.exports = router;
