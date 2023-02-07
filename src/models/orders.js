@@ -12,6 +12,7 @@ const ordersSchema = new mongoose.Schema({
     price: Number,
   }],
   totalPrice: Number,
+  notes: String
 },{timestamps: true}
 )
 
