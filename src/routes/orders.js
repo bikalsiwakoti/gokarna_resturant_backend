@@ -39,16 +39,22 @@ router.get("/getByDates", authUser.verifyUser, async (req, res) => {
     // console.log(req.body.startDate)
     const startDate = req.query.startDate
     const endDate = req.query.endDate
-    // console.log(startDate)
-    if (startDate || endDate) {
-      const getOrders = await Orders.find({ updatedAt: { $gte: startDate, $lte: endDate } }).sort({ _id: -1 })
+    const date = new Date(endDate);
+
+    function addDays(date, days) {
+      date.setDate(date.getDate() + days);
+      return date;
+    }
+    
+    const newEndDate = addDays(date, 1);
+
+    if (startDate && endDate) {
+      const getOrders = await Orders.find({ updatedAt: { $gt: startDate, $lt: newEndDate } }).sort({ _id: -1 })
       res.status(201).send(getOrders)
     } else {
       const getOrders = await Orders.find().sort({ _id: -1 })
       res.status(201).send(getOrders)
-
     }
-
   } catch (err) {
     res.status(400).send(err)
   }

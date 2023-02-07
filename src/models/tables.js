@@ -7,9 +7,9 @@ const validator = require("validator")
     required: true,
     unique:true
   },
-  status: {
+  type: {
     type: String,
-    required: true
+    required: true,
   },
   tableOrders:[{
     productsId: String,
@@ -18,7 +18,6 @@ const validator = require("validator")
     price: Number,
     orderId: String
   }]
-
 })
 
 
