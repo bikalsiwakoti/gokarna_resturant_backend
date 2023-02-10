@@ -26,8 +26,19 @@ router.post("/add", async (req, res) => {
 router.get("/get", authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
-    const getOrders = await Orders.find().sort({ _id: -1 })
+    const getOrders = await Orders.find().sort({ _id: -1 }).limit(10)
     res.status(201).send(getOrders)
+
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+router.get("/getOneOrders/:id", authUser.verifyUser, async (req, res) => {
+  try {
+    // console.log(req.body)
+    const data = await Orders.findById({_id: req.params.id})
+    res.status(201).send(data)
 
   } catch (err) {
     res.status(400).send(err)
