@@ -5,6 +5,7 @@ const productRoute = require('./src/routes/product')
 const userRoute = require('./src/routes/user')
 const tablesRoute = require('./src/routes/tables')
 const ordersRoute = require('./src/routes/orders')
+const roomsRoute = require('./src/routes/room')
 const authUser = require('./src/middleware/authUser')
 
 
@@ -20,6 +21,7 @@ app.use('/api/product', productRoute);
 app.use('/api/user',userRoute);
 app.use('/api/tables',tablesRoute);
 app.use('/api/orders',ordersRoute);
+app.use('/api/rooms',roomsRoute);
 
 // for heroku
 if(process.env.NODE_ENV === "production"){
