@@ -26,7 +26,7 @@ router.post("/add", async (req, res) => {
 router.get("/get", authUser.verifyUser, async (req, res) => {
   try {
     // console.log(req.body)
-    const getOrders = await Orders.find().sort({ _id: -1 }).limit(10)
+    const getOrders = await Orders.find().sort({ _id: -1 })
     res.status(201).send(getOrders)
 
   } catch (err) {
@@ -63,7 +63,7 @@ router.get("/getByDates", authUser.verifyUser, async (req, res) => {
       const getOrders = await Orders.find({ updatedAt: { $gt: startDate, $lt: newEndDate } }).sort({ _id: -1 })
       res.status(201).send(getOrders)
     } else {
-      const getOrders = await Orders.find().sort({ _id: -1 })
+      const getOrders = await Orders.find().sort({ _id: -1 }).limit(100)
       res.status(201).send(getOrders)
     }
   } catch (err) {
