@@ -5,7 +5,6 @@ const User = require("../models/user");
 module.exports.verifyUser = async function (req, res, next) {
     try {
         const token = req.headers.cookie.split("=")[1];
-        console.log(token)
         if (!token) {
             return res.status(404).json({ status: false, message: "Fail to authenticate Member" });
         }
@@ -33,7 +32,6 @@ module.exports.verifyUser = async function (req, res, next) {
 module.exports.verifyAdmin = async (req, res, next) => {
     try {
         const token = req.headers.cookie.split("=")[1];
-        console.log(token)
         if (!token) {
             return res.status(404).json({ status: false, message: "Fail to authenticate admin" });
         }
