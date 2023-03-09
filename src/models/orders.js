@@ -10,9 +10,11 @@ const ordersSchema = new mongoose.Schema({
     productsName: String,
     quantity: Number,
     price: Number,
+    productPrice: Number,
   }],
   totalPrice: Number,
-  notes: String
+  notes: String,
+  roomPrice: Number,
 },{timestamps: true}
 )
 

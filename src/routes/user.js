@@ -44,7 +44,6 @@ router.post("/login", async (req, res) => {
     const password = req.body.password;
 
     const usernameCheck = await AddUser.findOne({ username })
-    // console.log(usernameCheck)
     const passMatch = await bcryptjs.compare(password, usernameCheck.password)
 
     if (passMatch) {

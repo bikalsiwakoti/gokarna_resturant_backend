@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 module.exports.verifyUser = async function (req, res, next) {
     try {
-        const token = req.headers.cookie.split("=")[1];
+        const token = req.cookies.loginToken;
         if (!token) {
             return res.status(404).json({ status: false, message: "Fail to authenticate Member" });
         }
@@ -12,7 +12,6 @@ module.exports.verifyUser = async function (req, res, next) {
             if (err) {
                 return res.status(404).json({ status: false, message: "Token not valid" });
             }
-            // console.log(data)
             User.findOne({ _id: data._id })
                 .then(function (userData) {
                     req.user = userData;
@@ -39,11 +38,9 @@ module.exports.verifyAdmin = async (req, res, next) => {
             if (err) {
                 return res.status(404).json({ status: false, message: "Token not valid" });
             }
-            // console.log(data)
             User.findOne({ _id: data.id })
                 .then(function (userData) {
                     req.user = userData;
-                    console.log(userData)
                     if(userData.isAdmin){
                         next();
                     }else{

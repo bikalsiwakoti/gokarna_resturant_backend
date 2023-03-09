@@ -21,7 +21,6 @@ router.post("/add", authUser.verifyUser, async (req, res) => {
 
 router.get("/getAll",authUser.verifyUser, async (req, res) => {
   try {
-    // console.log(req.body)
     const getProducts = await Products.find()
     res.status(201).send(getProducts)
   } catch (err) {
@@ -31,9 +30,7 @@ router.get("/getAll",authUser.verifyUser, async (req, res) => {
 
 router.get("/getBySearch", authUser.verifyUser, async (req, res) => {
   try {
-    // console.log(req.body)
     const product = req.query.product
-    console.log(product)
     const getProducts = await Products.find({name: {$regex: product, $options:"$i"}})
     res.status(201).send(getProducts)
   } catch (err) {
