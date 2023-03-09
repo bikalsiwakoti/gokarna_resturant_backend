@@ -6,7 +6,6 @@ const Tables = require("../models/tables")
 
 router.post("/add", async (req, res) => {
   try {
-    // console.log(req.body)
     const tablesRes = new Tables(req.body)
     await tablesRes.save()
     res.status(201).send("posted successfully")
@@ -19,8 +18,6 @@ router.post("/add", async (req, res) => {
 router.post("/tableOrders/add/:id", async (req, res) => {
   try {
     const _id = req.params.id
-    const productsId = req.body.productsId
-    console.log(req.body)
     await Tables.findByIdAndUpdate({ _id }, { $push: { tableOrders: req.body } }, { new: true })
     res.status(201).send(req.body)
 
@@ -32,7 +29,6 @@ router.post("/tableOrders/add/:id", async (req, res) => {
 router.delete("/tableOrders/delete/:tableId/:productId", async (req, res) => {
   try {
     const tableId = req.params.tableId
-    console.log(req.body)
     await Tables.updateOne({ _id: tableId }, { $pull: { tableOrders: { _id : req.params.productId}  } }, { new: true })
 
     res.status(201).send("successfully deleted")
@@ -67,7 +63,6 @@ router.patch("/deleteTableProducts/:id", async (req, res) => {
 
 router.get("/get", async (req, res) => {
   try {
-    // console.log(req.body)
     const getTables = await Tables.find()
     res.status(201).send(getTables)
 
@@ -76,5 +71,43 @@ router.get("/get", async (req, res) => {
   }
 })
 
+//update deluxe price
+router.put("/updateDeluxe", async (req, res) => {
+  try {
+    await Tables.updateMany({type: "deluxe"}, {$set: { roomPrice: req.body.roomPrice}})
+    res.status(201).send("Updated Successfully")
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
+//update superdeluxe
+router.put("/updateSuperDeluxe", async (req, res) => {
+  try {
+    await Tables.updateMany({type: "superdeluxe"}, {$set: { roomPrice: req.body.roomPrice}})
+    res.status(201).send("Updated Successfully")
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+//update superdeluxe
+router.get("/findSuperDeluxe", async (req, res) => {
+  try {
+    const data = await Tables.findOne({type: "superdeluxe"})
+    res.status(201).send(data)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+//update superdeluxe
+router.get("/findDeluxe", async (req, res) => {
+  try {
+    const data = await Tables.findOne({type: "deluxe"})
+    res.status(201).send(data)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 module.exports = router;

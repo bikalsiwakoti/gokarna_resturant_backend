@@ -8,7 +8,6 @@ const { find } = require('../models/tables');
 
 router.post("/add", async (req, res) => {
   try {
-    // console.log(req.body)
     const ordersData = await Orders.find()
     const ordersRes = new Orders({
       ...req.body,
@@ -25,7 +24,6 @@ router.post("/add", async (req, res) => {
 
 router.get("/get", authUser.verifyUser, async (req, res) => {
   try {
-    // console.log(req.body)
     const getOrders = await Orders.find().sort({ _id: -1 })
     res.status(201).send(getOrders)
 
@@ -34,10 +32,37 @@ router.get("/get", authUser.verifyUser, async (req, res) => {
   }
 })
 
+router.put("/updateOrders/:orderTableId/:orderId", authUser.verifyUser, async (req, res) => {
+  try {
+    const orderTable = await Orders.updateOne({ _id: req.params.orderTableId, "orders._id" : req.params.orderId}, { $set: { "orders.$.quantity" : req.body.quantity, "orders.$.price" : req.body.price } })
+    res.status(201).send(orderTable)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+router.put("/updateOrderTablePrice/:orderTableId", authUser.verifyUser, async (req, res) => {
+  try {
+    const orderTable = await Orders.updateOne({ _id: req.params.orderTableId}, { $set: {totalPrice: req.body.totalPrice } })
+    res.status(201).send(orderTable)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+router.get("/getOneOrders/:orderTableId/:orderId", authUser.verifyUser, async (req, res) => {
+  try {
+    const orderTable = await Orders.find({ _id: req.params.orderTableId, "orders._id" : req.params.orderId})
+    res.status(201).send(orderTable)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+
 router.get("/getOneOrders/:id", authUser.verifyUser, async (req, res) => {
   try {
-    // console.log(req.body)
-    const data = await Orders.findById({_id: req.params.id})
+    const data = await Orders.findById({ _id: req.params.id })
     res.status(201).send(data)
 
   } catch (err) {
@@ -47,7 +72,6 @@ router.get("/getOneOrders/:id", authUser.verifyUser, async (req, res) => {
 
 router.get("/getByDates", authUser.verifyUser, async (req, res) => {
   try {
-    // console.log(req.body.startDate)
     const startDate = req.query.startDate
     const endDate = req.query.endDate
     const date = new Date(endDate);
@@ -56,11 +80,11 @@ router.get("/getByDates", authUser.verifyUser, async (req, res) => {
       date.setDate(date.getDate() + days);
       return date;
     }
-    
+
     const newEndDate = addDays(date, 1);
 
     if (startDate && endDate) {
-      const getOrders = await Orders.find({ updatedAt: { $gt: startDate, $lt: newEndDate } }).sort({ _id: -1 })
+      const getOrders = await Orders.find({ createdAt: { $gt: startDate, $lt: newEndDate } }).sort({ _id: -1 })
       res.status(201).send(getOrders)
     } else {
       const getOrders = await Orders.find().sort({ _id: -1 }).limit(100)

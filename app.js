@@ -7,6 +7,8 @@ const tablesRoute = require('./src/routes/tables')
 const ordersRoute = require('./src/routes/orders')
 const roomsRoute = require('./src/routes/room')
 const authUser = require('./src/middleware/authUser')
+const cookieparser = require('cookie-parser')
+const cors = require('cors')
 
 
 
@@ -14,6 +16,11 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(express.json())
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://restaurant.gokarna-resort.com', 'http://restaurant.gokarna-resort.com'],
+  credentials: true,
+}))
+app.use(cookieparser())
 app.use(express.urlencoded({extendend: true}))
 
 
@@ -24,10 +31,10 @@ app.use('/api/orders',ordersRoute);
 app.use('/api/rooms',roomsRoute);
 
 // for heroku
-if(process.env.NODE_ENV === "production"){
-  app.use(express.static(path.join("gokarna-pos/build"))); 
-  app.get("*",(req,res)=> res.sendFile(path.resolve(__dirname,"gokarna-pos","build", "index.html"))) 
-}
+// if(process.env.NODE_ENV === "production"){
+//   app.use(express.static(path.join("gokarna-pos/build"))); 
+//   app.get("*",(req,res)=> res.sendFile(path.resolve(__dirname,"gokarna-pos","build", "index.html"))) 
+// }
 
 app.listen(port, () => {
   console.log(`Connecting in a port ${port}`)
