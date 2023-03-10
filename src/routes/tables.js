@@ -2,9 +2,11 @@ const express = require('express');
 const { findByIdAndUpdate } = require('../models/tables');
 const router = express.Router();
 const Tables = require("../models/tables")
+const authUser = require('../middleware/authUser')
 
 
-router.post("/add", async (req, res) => {
+
+router.post("/add",authUser.verifyAdmin, async (req, res) => {
   try {
     const tablesRes = new Tables(req.body)
     await tablesRes.save()
@@ -15,7 +17,7 @@ router.post("/add", async (req, res) => {
   }
 })
 
-router.post("/tableOrders/add/:id", async (req, res) => {
+router.post("/tableOrders/add/:id", authUser.verifyAdmin, async (req, res) => {
   try {
     const _id = req.params.id
     await Tables.findByIdAndUpdate({ _id }, { $push: { tableOrders: req.body } }, { new: true })
@@ -26,7 +28,7 @@ router.post("/tableOrders/add/:id", async (req, res) => {
   }
 })
 
-router.delete("/tableOrders/delete/:tableId/:productId", async (req, res) => {
+router.delete("/tableOrders/delete/:tableId/:productId",authUser.verifyAdmin , async (req, res) => {
   try {
     const tableId = req.params.tableId
     await Tables.updateOne({ _id: tableId }, { $pull: { tableOrders: { _id : req.params.productId}  } }, { new: true })
@@ -38,7 +40,7 @@ router.delete("/tableOrders/delete/:tableId/:productId", async (req, res) => {
   }
 })
 
-router.get("/oneTable/get/:id", async (req, res) => {
+router.get("/oneTable/get/:id",authUser.verifyUser, async (req, res) => {
   try {
     const _id = req.params.id
     const data = await Tables.findById(_id)
