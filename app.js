@@ -17,7 +17,7 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json())
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://restaurant.gokarna-resort.com', 'http://restaurant.gokarna-resort.com'],
+  origin: ['http://localhost:8000','https://restaurant.gokarna-resort.com', 'http://restaurant.gokarna-resort.com'],
   credentials: true,
 }))
 app.use(cookieparser())
@@ -26,7 +26,7 @@ app.use(express.urlencoded({extendend: true}))
 
 app.use('/api/product', productRoute);
 app.use('/api/user',userRoute);
-app.use('/api/tables',tablesRoute);
+app.use('/api/tables', tablesRoute);
 app.use('/api/orders',ordersRoute);
 app.use('/api/rooms',roomsRoute);
 

@@ -6,7 +6,7 @@ const { find } = require('../models/tables');
 
 
 
-router.post("/add", async (req, res) => {
+router.post("/add",authUser.verifyUser, async (req, res) => {
   try {
     const ordersData = await Orders.find()
     const ordersRes = new Orders({
