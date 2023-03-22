@@ -56,6 +56,7 @@ router.post("/login", async (req, res) => {
       res.cookie("loginToken", token, {
         httpOnly: true,
         // secure: true
+        maxAge: 25920000000
       });
       const data = {
         username: usernameCheck.username,
