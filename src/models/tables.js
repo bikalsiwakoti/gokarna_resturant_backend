@@ -20,6 +20,11 @@ const tablesSchema = new mongoose.Schema({
     productPrice: Number
   }],
   roomPrice: Number,
+  active: {
+    type: Boolean,
+    default: false
+  },
+  notes: String,
 })
 
 

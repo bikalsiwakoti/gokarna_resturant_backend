@@ -6,6 +6,7 @@ const userRoute = require('./src/routes/user')
 const tablesRoute = require('./src/routes/tables')
 const ordersRoute = require('./src/routes/orders')
 const roomsRoute = require('./src/routes/room')
+const kotRoute = require('./src/routes/kotOrders')
 const authUser = require('./src/middleware/authUser')
 const cookieparser = require('cookie-parser')
 const cors = require('cors')
@@ -17,7 +18,7 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json())
 app.use(cors({
-  origin: ['http://localhost:8000','https://restaurant.gokarna-resort.com', 'http://restaurant.gokarna-resort.com'],
+  origin: ['http://localhost:3000','https://restaurant.gokarna-resort.com', 'http://restaurant.gokarna-resort.com'],
   credentials: true,
 }))
 app.use(cookieparser())
@@ -29,6 +30,7 @@ app.use('/api/user',userRoute);
 app.use('/api/tables', tablesRoute);
 app.use('/api/orders',ordersRoute);
 app.use('/api/rooms',roomsRoute);
+app.use('/api/kot',kotRoute);
 
 // for heroku
 // if(process.env.NODE_ENV === "production"){

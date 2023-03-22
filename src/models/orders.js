@@ -15,6 +15,7 @@ const ordersSchema = new mongoose.Schema({
   totalPrice: Number,
   notes: String,
   roomPrice: Number,
+  discount: Number
 },{timestamps: true}
 )
 

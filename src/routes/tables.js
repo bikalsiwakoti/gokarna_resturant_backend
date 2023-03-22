@@ -11,7 +11,15 @@ router.post("/add",authUser.verifyAdmin, async (req, res) => {
     const tablesRes = new Tables(req.body)
     await tablesRes.save()
     res.status(201).send("posted successfully")
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
+router.post("/updateNotes/:id",authUser.verifyAdmin, async (req, res) => {
+  try {
+    const tablesRes = await Tables.findByIdAndUpdate({_id:req.params.id}, {$set: {notes: req.body.notes}}, {new:true})
+    res.status(201).send(tablesRes)
   } catch (err) {
     res.status(400).send(err)
   }
@@ -22,7 +30,6 @@ router.post("/tableOrders/add/:id", authUser.verifyAdmin, async (req, res) => {
     const _id = req.params.id
     await Tables.findByIdAndUpdate({ _id }, { $push: { tableOrders: req.body } }, { new: true })
     res.status(201).send(req.body)
-
   } catch (err) {
     res.status(400).send(err)
   }
@@ -54,7 +61,7 @@ router.get("/oneTable/get/:id",authUser.verifyUser, async (req, res) => {
 router.patch("/deleteTableProducts/:id", async (req, res) => {
   try {
     const _id = req.params.id
-    await Tables.findByIdAndUpdate(_id, {$set: {tableOrders: []}})
+    await Tables.findByIdAndUpdate(_id, {$set: {tableOrders: [], notes: ""}})
     res.status(201).send("success")
 
   } catch (err) {
@@ -112,4 +119,17 @@ router.get("/findDeluxe", async (req, res) => {
     res.status(400).send(err)
   }
 })
+
+//update active button
+router.put("/findAndUpdateActive/:id", async (req, res) => {
+  try {
+    const data = await Tables.findByIdAndUpdate({_id : req.params.id}, {$set: { active: req.body.active}})
+    res.status(201).send(data)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+
+
 module.exports = router;
